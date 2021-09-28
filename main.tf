@@ -74,12 +74,3 @@ resource "azurerm_container_group" "aci" {
     name            = var.aci_name
   }
 }
-
-volume =[
-  {
-
-  },
-  {
-
-  }
-]
