@@ -13,7 +13,7 @@ variable "aci_name" {
   type = string
 }
 
-variable "ip_type" {
+variable "ip_address_type" {
   description = "IP address type. Should be public or private"
   type = string
   default = "public"
