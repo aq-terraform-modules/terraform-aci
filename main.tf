@@ -14,7 +14,7 @@ resource "azurerm_resource_group" "rg" {
 resource "azurerm_container_group" "aci" {
   name = var.aci_name
   location = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = azurerm_resource_group.rg.name
   ip_address_type = var.ip_address_type
   dns_name_label = var.dns_name_label
   os_type = var.os_type
