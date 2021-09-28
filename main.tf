@@ -61,7 +61,7 @@ resource "azurerm_container_group" "aci" {
         share_name = azurerm_storage_share.aci_volume_share[volume.key].name
 
         storage_account_name = azurerm_storage_account.aci_storage_account[0].name
-        storage_account_key = aci_storage_account.aci_storage_account[0].primary_access_key
+        storage_account_key = azurerm_storage_account.aci_storage_account[0].primary_access_key
       }
     }
   }
