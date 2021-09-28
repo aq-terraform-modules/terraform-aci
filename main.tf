@@ -60,8 +60,8 @@ resource "azurerm_container_group" "aci" {
         mount_path = volume.value.mount_path
         share_name = azurerm_storage_share.aci_volume_share[volume.key].name
 
-        storage_account_name = azurerm_storage_account.aci_storage_account.name
-        storage_account_key = aci_storage_account.aci_storage_account.primary_access_key
+        storage_account_name = azurerm_storage_account.aci_storage_account[0].name
+        storage_account_key = aci_storage_account.aci_storage_account[0].primary_access_key
       }
     }
   }
