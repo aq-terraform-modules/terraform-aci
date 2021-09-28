@@ -99,7 +99,7 @@ variable "account_replication_type" {
   default = "LRS"
 }
 
-variable "volume" {
+variable "container_volume" {
   description = "Quota for webdata fileshare"
   type = any
   default = []

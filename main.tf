@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "aci_rg" {
 }
 
 resource "azurerm_storage_account" "aci_storage_account" {
-  count                    = length(var.volume) > 0 ? 1 : 0
+  count                    = length(var.container_volume) > 0 ? 1 : 0
   name                     = var.storage_account_name
   resource_group_name      = azurerm_resource_group.aci_rg.name
   location                 = var.location
@@ -22,10 +22,10 @@ resource "azurerm_storage_account" "aci_storage_account" {
 }
 
 resource "azurerm_storage_share" "aci_volume_share" {
-  count                = length(var.volume)
-  name                 = var.volume[count.index].name
+  count                = length(var.container_volume)
+  name                 = var.container_volume[count.index].name
   storage_account_name = azurerm_storage_account.aci_storage_account[0].name
-  quota                = var.volume[count.index].quota
+  quota                = var.container_volume[count.index].quota
 }
 
 resource "azurerm_container_group" "aci" {
@@ -54,7 +54,7 @@ resource "azurerm_container_group" "aci" {
     }
 
     dynamic "volume" {
-      for_each = var.volume
+      for_each = var.container_volume
       content {
         name = volume.value.name
         mount_path = volume.value.mount_path
