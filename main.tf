@@ -1,4 +1,4 @@
-resource "azurerm_resource_group" "rg" {
+resource "azurerm_resource_group" "aci_rg" {
   name = var.resource_group_name
   location = var.location
 
@@ -11,10 +11,27 @@ resource "azurerm_resource_group" "rg" {
   }
 }
 
+resource "azurerm_storage_account" "aci_storage_account" {
+  count                    = length(var.volume) > 0 ? 1 : 0
+  name                     = var.storage_account_name
+  resource_group_name      = azurerm_resource_group.aci_rg.name
+  location                 = var.location
+  account_tier             = var.account_tier
+  account_kind             = var.account_kind
+  account_replication_type = var.account_replication_type
+}
+
+resource "azurerm_storage_share" "aci_volume_share" {
+  count                = length(var.volume)
+  name                 = var.volume[count.index].name
+  storage_account_name = azurerm_storage_account.aci_storage_account[0].name
+  quota                = var.volume[count.index].quota
+}
+
 resource "azurerm_container_group" "aci" {
   name = var.aci_name
   location = var.location
-  resource_group_name = azurerm_resource_group.rg.name
+  resource_group_name = azurerm_resource_group.aci_rg.name
   ip_address_type = var.ip_address_type
   dns_name_label = var.dns_name_label
   os_type = var.os_type
@@ -35,6 +52,18 @@ resource "azurerm_container_group" "aci" {
         protocol = ports.value.protocol
       }
     }
+
+    dynamic "volume" {
+      for_each = var.volume
+      content {
+        name = volume.value.name
+        mount_path = volume.value.mount_path
+        share_name = azurerm_storage_share.aci_volume_share[volume.key].name
+
+        storage_account_name = azurerm_storage_account.aci_storage_account.name
+        storage_account_key = aci_storage_account.aci_storage_account.primary_access_key
+      }
+    }
   }
 
   lifecycle {
@@ -45,3 +74,12 @@ resource "azurerm_container_group" "aci" {
     name            = var.aci_name
   }
 }
+
+volume =[
+  {
+
+  },
+  {
+
+  }
+]

@@ -75,3 +75,32 @@ variable "secure_environment_variables" {
   type = map
   default = {}
 }
+
+variable "storage_account_name" {
+  description = "Storage account for fileshare volume"
+  type = string
+}
+
+variable "account_tier" {
+  description = "Storage account tier. Standard or Premium"
+  type = string
+  default = "Standard"
+}
+
+variable "account_kind" {
+  description = "Storage account kind. BlobStorage, BlockBlobStorage, FileStorage, Storage and StorageV2"
+  type = string
+  default = "StorageV2"
+}
+
+variable "account_replication_type" {
+  description = "Replication type for storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. Changing this forces a new resource to be created when types LRS, GRS and RAGRS are changed to ZRS, GZRS or RAGZRS and vice versa."
+  type = string
+  default = "LRS"
+}
+
+variable "volume" {
+  description = "Quota for webdata fileshare"
+  type = any
+  default = []
+}
