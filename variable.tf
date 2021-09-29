@@ -22,6 +22,7 @@ variable "ip_address_type" {
 variable "dns_name_label" {
   description = "DNS name for the ACI"
   type = string
+  default = ""
 }
 
 variable "os_type" {
